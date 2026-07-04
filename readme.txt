@@ -1,10 +1,10 @@
-=== FirePunch | Instant AVIF & WebP images for Advanced Custom Fields developers ===
+=== FirePunch | Instant AVIF & WebP images for ACF developers ===
 Contributors: matteobruschetti
 Tags: acf, webp, avif, images, performance
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 2.1
+Stable tag: 2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,10 +17,11 @@ Automatic and asynchronous AVIF & WebP image optimization for custom themes and 
 This tool is built specifically for web developers working with custom themes and image fields (such as **ACF - Advanced Custom Fields** or **Gutenberg blocks**).
 
 ### How does it work?
+
+https://www.youtube.com/watch?v=oEg8D7W3K1U
+
 1. **Automatic conversion:** The plugin intercepts JPG and PNG media uploads and generates variants asynchronously in the background, ensuring zero impact on server performance during your daily workflow.
-2. **Predictable URL Structure:** Converted AVIF and WebP variants are saved directly alongside the original media, making them instantly accessible by simply appending `.avif` or `.webp` to the original image URL. For example:
-* `https://example.com/wp-content/uploads/immagine.jpg.webp`
-* `https://example.com/wp-content/uploads/immagine.jpg.avif`
+2. **Predictable URL Structure:** Converted AVIF and WebP variants are saved directly alongside the original media, making them instantly accessible by simply appending `.avif` or `.webp` to the original image URL. For example: `https://example.com/wp-content/uploads/immagine.jpg.webp` and `https://example.com/wp-content/uploads/immagine.jpg.avif`
 3. **Effortless Theme Integration:**  Simply call them inside your custom theme using the standard WordPress function `wp_get_attachment_image()` or the plugin's dedicated helper function `wp_avif_img()`.
 4. **Smart HTML5 Fallback:** The plugin automatically rewrites the frontend output into a robust `<picture>` tag. The browser will dynamically load the best possible format based on user compatibility, seamlessly prioritizing **AVIF**, falling back to **WebP**, and using the original **JPG** or **PNG** as the ultimate safety fallback.
 
@@ -69,17 +70,16 @@ Practical Examples:
 = 3. Advanced Custom Fields (ACF) Integration =
 When creating an Image field in ACF, leave the **Return Format** to **Array**. This approach allows you to dynamically extract the attachment ID for the optimization engine while safely preserving a native standard HTML fallback. In your template file, write:
 
-   ```php
-   <figure>
-      <?php if($acf_img_field): ?>
-         <?php if ( function_exists('wp_avif_img') ) {
-            $img_id = $acf_img_field['ID']; 
-            echo wp_avif_img($img_id, 'large', 'lazy');
-         } else { ?>
-            <img loading="lazy" src="<?php echo esc_url($acf_img_field['url']); ?>" alt="<?php echo esc_attr( $acf_img_field['alt'] ); ?>" />
-         <?php } ?>
-      <?php endif; ?>
-   </figure>
+    &lt;figure&gt;
+        &lt;?php if($acf_img_field): ?&gt;
+           &lt;?php if ( function_exists('wp_avif_img') ) {
+              $img_id = $acf_img_field['ID']; 
+              echo wp_avif_img($img_id, 'large', 'lazy');
+           } else { ?&gt;
+             &lt;img loading="lazy" src="&lt;?php echo esc_url($acf_img_field['url']); ?&gt;" alt="&lt;?php echo esc_attr( $acf_img_field['alt'] ); ?&gt;" /&gt;
+          &lt;?php } ?&gt;
+       &lt;?php endif; ?&gt;
+    &lt;/figure&gt;
 
 == Frequently Asked Questions ==
 
@@ -104,6 +104,9 @@ No. Deactivating the plugin simply removes the frontend filters, returning your 
 2. Mirror file variants successfully generated in the background inside the standard WordPress uploads folder.
 
 == Changelog ==
+
+= 2.2 =
+* readme.txt YT video
 
 = 2.1 =
 * Added admin page to show current settings, plugin status and some debug information to diagnose issues.
