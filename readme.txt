@@ -4,7 +4,7 @@ Tags: acf, webp, avif, images, performance
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 2.0
+Stable tag: 2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,11 +12,17 @@ Automatic and asynchronous AVIF & WebP image optimization for custom themes and 
 
 == Description ==
 
-**FirePunch** is a lightweight, high-performance plugin designed to optimize image management in WordPress by automatically converting them into next-generation **AVIF** and **WebP** formats.
+**FirePunch** is a lightweight, 100% free plugin designed to optimize image management in WordPress by automatically converting them into next-generation **AVIF** and **WebP** formats.
 
-This tool is built specifically for web developers working with custom themes and image ID fields (such as **ACF - Advanced Custom Fields**). The plugin intercepts uploads and generates variants asynchronously in the background, ensuring zero impact on server performance during your daily workflow.
+This tool is built specifically for web developers working with custom themes and image fields (such as **ACF - Advanced Custom Fields** or **Gutenberg blocks**).
 
-Thanks to its native integration with WordPress core functions, any image called via `wp_get_attachment_image()` will automatically be transformed into a modern, responsive HTML5 `<picture>` tag.
+### How does it work?
+1. **Automatic conversion:** The plugin intercepts JPG and PNG media uploads and generates variants asynchronously in the background, ensuring zero impact on server performance during your daily workflow.
+2. **Predictable URL Structure:** Converted AVIF and WebP variants are saved directly alongside the original media, making them instantly accessible by simply appending `.avif` or `.webp` to the original image URL. For example:
+* `https://example.com/wp-content/uploads/immagine.jpg.webp`
+* `https://example.com/wp-content/uploads/immagine.jpg.avif`
+3. **Effortless Theme Integration:**  Simply call them inside your custom theme using the standard WordPress function `wp_get_attachment_image()` or the plugin's dedicated helper function `wp_avif_img()`.
+4. **Smart HTML5 Fallback:** The plugin automatically rewrites the frontend output into a robust `<picture>` tag. The browser will dynamically load the best possible format based on user compatibility, seamlessly prioritizing **AVIF**, falling back to **WebP**, and using the original **JPG** or **PNG** as the ultimate safety fallback.
 
 ### Key Features:
 * **Asynchronous Background Processing:** Leverages Action Scheduler (or WP-Cron with a safety offset) to process images sequentially without locking up the server or triggering execution timeouts.
@@ -24,6 +30,7 @@ Thanks to its native integration with WordPress core functions, any image called
 * **Zero Disk I/O Abuse:** Caches the status of all available file variants directly inside the attachment metadata in the database. No endless file system lookups on every single page load.
 * **Modern HTML5 Rewriting:** Utilizes the native `WP_HTML_Tag_Processor` (introduced in WP 6.2) to safely rewrite `<img>` tags into multi-source `<picture>` structures.
 * **Automatic Cleanup:** When an image is deleted from the media library, all associated AVIF and WebP variants are permanently removed, featuring path traversal protection.
+* **Zero ACF Dependencies:** Built 100% WordPress-native with absolutely no reliance on Advanced Custom Fields, making it perfectly compatible with any custom theme workflow.
 
 == Installation ==
 
@@ -60,14 +67,19 @@ Practical Examples:
     ) );
 
 = 3. Advanced Custom Fields (ACF) Integration =
-When creating an Image field in ACF, set the **Return Format** to **Image ID**. In your template file, simply write:
+When creating an Image field in ACF, leave the **Return Format** to **Array**. This approach allows you to dynamically extract the attachment ID for the optimization engine while safely preserving a native standard HTML fallback. In your template file, write:
 
-    <?php
-    $image_id = get_field( 'your_image_field_name' );
-    if ( $image_id ) {
-        echo wp_avif_img( $image_id, 'large', 'lazy' );
-    }
-    ?>
+   ```php
+   <figure>
+      <?php if($acf_img_field): ?>
+         <?php if ( function_exists('wp_avif_img') ) {
+            $img_id = $acf_img_field['ID']; 
+            echo wp_avif_img($img_id, 'large', 'lazy');
+         } else { ?>
+            <img loading="lazy" src="<?php echo esc_url($acf_img_field['url']); ?>" alt="<?php echo esc_attr( $acf_img_field['alt'] ); ?>" />
+         <?php } ?>
+      <?php endif; ?>
+   </figure>
 
 == Frequently Asked Questions ==
 
@@ -95,6 +107,8 @@ No. Deactivating the plugin simply removes the frontend filters, returning your 
 
 = 2.1 =
 * Added admin page to show current settings, plugin status and some debug information to diagnose issues.
+* Fixed blurry header banner on desktop screens.
+* Updated readme.txt documentation.
 
 = 1.2 =
 * Replaced the old regex parser with the native WP_HTML_Tag_Processor API for robust and safe HTML rewriting.

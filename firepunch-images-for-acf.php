@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: FirePunch | Instant AVIF & WebP images for Advanced Custom Fields developers
- * Description: Automatic and asynchronous AVIF & WebP image optimization for custom themes and Advanced Custom Fields.
- * Version:     2.0
+ * Description: Automatic and asynchronous AVIF & WebP image optimization for ACF custom themes.
+ * Version:     2.1
  * Author:      Matteo Bruschetti
  * Author URI:  https://matteobruschetti.it
  * License:     GPLv2 or later
@@ -841,10 +841,20 @@ class MB_AVIF_WebP_Optimizer {
                <p style="margin-top: 0px; margin-bottom: 16px; color: #646970;">
                   <?php echo wp_kses_post( __( 'The plugin provides a global function <code>wp_avif_img()</code> designed to integrate, inside a <code>&lt;picture&gt;</code> HTML tag, the next-gen format images (with fallbacks to standard formats) from an ACF image field.', 'firepunch-images-for-acf' ) ); ?>
                </p>
+
+               <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: 8px;">
+                  <iframe 
+                        src="https://www.youtube.com/embed/oEg8D7W3K1U" 
+                        title="FirePunch Tutorial"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                  </iframe>
+               </div>
                
                <hr style="border: 0; border-top: 1px solid #f0f0f1; margin: 15px 0;">
 
-               <h3 style="font-size: 1.1em; margin-bottom: 5px;">1. <?php esc_html_e( 'Standard Example', 'firepunch-images-for-acf' ); ?></h3>
+               <h3 style="font-size: 1.1em; margin-bottom: 5px;">1. <?php esc_html_e( 'ACF Standard example', 'firepunch-images-for-acf' ); ?></h3>
                <p style="margin-top: 0; color: #646970;"><?php esc_html_e( 'Use this approach to retrieve a specific ACF image field, while maintaining a fallback in case the plugin is uninstalled.', 'firepunch-images-for-acf' ); ?></p>
                <pre style="background: #f6f7f7; padding: 15px; border-left: 4px solid #3582c4; overflow-x: auto; font-family: monospace; direction: ltr;"><code>&lt;figure&gt;
    &lt;?php if($acf_img_field): ?&gt;
@@ -859,7 +869,7 @@ class MB_AVIF_WebP_Optimizer {
 
                <hr style="border: 0; border-top: 1px solid #f0f0f1; margin: 15px 0;">
 
-               <h3 style="font-size: 1.1em; margin-top: 20px; margin-bottom: 5px;">2. <?php esc_html_e( 'Advanced Example with Specific Size and Lazy Loading', 'firepunch-images-for-acf' ); ?></h3>
+               <h3 style="font-size: 1.1em; margin-top: 20px; margin-bottom: 5px;">2. <?php esc_html_e( 'ACF example with Specific Size and Lazy Loading', 'firepunch-images-for-acf' ); ?></h3>
                <p style="margin-top: 0; color: #646970;"><?php esc_html_e( 'Use this approach to request a specific image size (e.g., large) while also enabling native lazy loading.', 'firepunch-images-for-acf' ); ?></p>
                <pre style="background: #f6f7f7; padding: 15px; border-left: 4px solid #3582c4; overflow-x: auto; font-family: monospace; direction: ltr;"><code>&lt;figure&gt;
    &lt;?php if($acf_img_field): ?&gt;
@@ -870,6 +880,16 @@ class MB_AVIF_WebP_Optimizer {
          &lt;img loading="lazy" src="&lt;?php echo esc_url($acf_img_field['url']); ?&gt;" alt="&lt;?php echo esc_attr( $acf_img_field['alt'] ); ?&gt;" /&gt;
       &lt;?php } ?&gt;
    &lt;?php endif; ?&gt;
+&lt;/figure&gt;</code></pre>
+
+               <hr style="border: 0; border-top: 1px solid #f0f0f1; margin: 15px 0;">
+
+               <h3 style="font-size: 1.1em; margin-top: 20px; margin-bottom: 5px;">3. <?php esc_html_e( 'WordPress Native Example (Automatic Integration)', 'firepunch-images-for-acf' ); ?></h3>
+               <p style="margin-top: 0; color: #646970;"><?php esc_html_e( 'Use this approach if you prefer core WordPress functions. The plugin automatically intercepts and rewrites the output into a picture tag with no extra checks needed.', 'firepunch-images-for-acf' ); ?></p>
+               <pre style="background: #f6f7f7; padding: 15px; border-left: 4px solid #3582c4; overflow-x: auto; font-family: monospace; direction: ltr;"><code>&lt;figure&gt;
+   &lt;?php if ( ! empty( $attachment_id ) ) {
+      echo wp_get_attachment_image( $attachment_id, 'large', false, array( 'loading' => 'lazy' ) );
+   } ?&gt;
 &lt;/figure&gt;</code></pre>
             </div>
             <?php
