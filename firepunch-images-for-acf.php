@@ -2,7 +2,7 @@
 /**
  * Plugin Name: FirePunch | Instant AVIF & WebP images for Advanced Custom Fields developers
  * Description: Automatic and asynchronous AVIF & WebP image optimization for ACF custom themes.
- * Version:     2.2.1
+ * Version:     2.2.2
  * Author:      Matteo Bruschetti
  * Author URI:  https://matteobruschetti.it
  * License:     GPLv2 or later

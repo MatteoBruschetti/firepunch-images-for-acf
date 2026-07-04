@@ -4,7 +4,7 @@ Tags: acf, webp, avif, images, performance
 Requires at least: 6.2
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,16 +70,18 @@ Practical Examples:
 = 3. Advanced Custom Fields (ACF) Integration =
 When creating an Image field in ACF, leave the **Return Format** to **Array**. This approach allows you to dynamically extract the attachment ID for the optimization engine while safely preserving a native standard HTML fallback. In your template file, write:
 
-                 `  <figure>
-                      <?php if($acf_img_field): ?>
-                         <?php if ( function_exists('wp_avif_img') ) {
-                            $img_id = $acf_img_field['ID'];
-                            echo wp_avif_img($img_id, 'large', 'lazy');
-                         } else { ?>
-                            <img loading="lazy" src="<?php echo esc_url($acf_img_field['url']); ?>" alt="<?php echo esc_attr( $acf_img_field['alt'] ); ?>" />
-                         <?php } ?>
-                      <?php endif; ?>
-                   </figure>`
+`
+<figure>
+   <?php if($acf_img_field): ?>
+      <?php if ( function_exists('wp_avif_img') ) {
+         $img_id = $acf_img_field['ID'];
+         echo wp_avif_img($img_id, 'large', 'lazy');
+      } else { ?>
+         <img loading="lazy" src="<?php echo esc_url($acf_img_field['url']); ?>" alt="<?php echo esc_attr( $acf_img_field['alt'] ); ?>" />
+      <?php } ?>
+   <?php endif; ?>
+</figure>
+`
 
 
 == Frequently Asked Questions ==
@@ -105,6 +107,9 @@ No. Deactivating the plugin simply removes the frontend filters, returning your 
 2. Mirror file variants successfully generated in the background inside the standard WordPress uploads folder.
 
 == Changelog ==
+
+= 2.2.2 =
+* readme.txt fix
 
 = 2.2.1 =
 * readme.txt fix
